@@ -1142,3 +1142,16 @@ form:invalid+button {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
 }
+/* Tydelig nulstillingsknap og tastaturfokus */
+#clearFiltersChip {
+  background-color: #fff;
+  color: #0a0a0a;
+  font-weight: 500;
+  min-height: 44px;
+  height: auto;
+}
+
+#clearFiltersChip:focus-visible {
+  outline: 3px solid #0a0a0a;
+  outline-offset: 3px;
+}

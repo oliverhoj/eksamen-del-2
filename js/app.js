@@ -1026,3 +1026,25 @@ difficultyForm?.addEventListener("change", (e) => {
 });
 
 
+
+// Ryd filtre uden at forlade siden.
+const clearFiltersButton = document.getElementById("clearFiltersChip");
+
+clearFiltersButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  selected = {};
+  activeFilter = null;
+  document.getElementById("searchInput").value = "";
+
+  // Fjern markeringerne fra de gamle valg.
+  document.querySelectorAll(".filters .active, .sub-filters-under .active")
+    .forEach((element) => element.classList.remove("active"));
+  document.querySelectorAll('.sub-filters-under input[type="radio"]')
+    .forEach((input) => input.checked = false);
+  if (underline) underline.style.width = "0px";
+
+  hideAllSubForms();
+  history.replaceState({}, "", window.location.pathname + window.location.hash);
+  filterGames();
+  clearFiltersButton.focus();
+});
