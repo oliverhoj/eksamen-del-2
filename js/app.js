@@ -794,6 +794,15 @@ const desktopFilters = document.getElementById("desktopFilters");
 filterToggle.addEventListener("click", () => {
   desktopFilters.hidden = !desktopFilters.hidden;
   filterToggle.setAttribute("aria-expanded", String(!desktopFilters.hidden));
+  if (!desktopFilters.hidden) desktopFilters.querySelector("button").focus();
+});
+
+desktopFilters.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    desktopFilters.hidden = true;
+    filterToggle.setAttribute("aria-expanded", "false");
+    filterToggle.focus();
+  }
 });
 
 document.querySelector(".close-filters").addEventListener("click", () => {
