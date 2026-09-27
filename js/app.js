@@ -68,7 +68,9 @@ async function getGames() {
 
 // #3: Render all movies in the grid
 function displayGames(games) {
-  resultater.innerHTML = "";
+  resultater.innerHTML = '<h1 id="gamesHeading" class="sr-only">Find et spil hos Spilcaféen</h1>';
+  document.getElementById("chip-info").innerText =
+    `${games.length} af ${allGames.length} spil vises`;
 
   if (!games.length) {
     resultater.insertAdjacentHTML(
@@ -79,9 +81,6 @@ function displayGames(games) {
   }
 
   console.log(`🎬 Viser ${games.length} game`);
-  document.getElementById(
-    "chip-info"
-  ).innerText = `${games.length} / ${allGames.length} spil`;
 
   for (const game of games) {
     displayGame(game);
@@ -94,21 +93,22 @@ function displayGame(game) {
     <div class="card" onclick="displayDrawer(${game.id})">
 	<div class="card__imageHolder">
 		<div class="card__rating">
-			<svg width="16" height="14" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <span class="sr-only">Bedømmelse: </span>
+			<svg aria-hidden="true" width="16" height="14" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M2.06919 6.79995L2.66502 4.35969L0.666687 2.71837L3.30669 2.50127L4.33335 0.199951L5.36002 2.50127L8.00002 2.71837L6.00169 4.35969L6.59752 6.79995L4.33335 5.506L2.06919 6.79995Z" fill="#F2CE17"/>
 </svg>
             ${game.rating}
 
 		</div>
 
-		<img src="${game.image}" alt="billed af ${game.title}">
+		<img src="${game.image}" alt="Spilæsken til ${game.title}">
 	</div>
 
 	<h2>${game.title}</h2>
 
 	<div class="card__info">
-		<div class="card__infoTAG"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg> ${game.players.min}-${game.players.max}</div>
-		<div class="card__infoTAG"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg> ${game.playtime} m.</div>
+		<div class="card__infoTAG"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg> ${game.players.min}-${game.players.max}<span class="sr-only"> spillere</span></div>
+		<div class="card__infoTAG"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg> ${game.playtime} min.</div>
     </div>
     </div>
     `;
@@ -145,7 +145,8 @@ function displayDrawer(id) {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6L18 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="card__rating">
-          <svg width="15" height="13" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.06919 6.79995L2.66502 4.35969L0.666687 2.71837L3.30669 2.50127L4.33335 0.199951L5.36002 2.50127L8.00002 2.71837L6.00169 4.35969L6.59752 6.79995L4.33335 5.506L2.06919 6.79995Z" fill="#F2CE17"/></svg>
+          <span class="sr-only">Bedømmelse: </span>
+          <svg aria-hidden="true" width="15" height="13" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.06919 6.79995L2.66502 4.35969L0.666687 2.71837L3.30669 2.50127L4.33335 0.199951L5.36002 2.50127L8.00002 2.71837L6.00169 4.35969L6.59752 6.79995L4.33335 5.506L2.06919 6.79995Z" fill="#F2CE17"/></svg>
           ${game.rating}
         </div>
       </div>
@@ -157,11 +158,12 @@ function displayDrawer(id) {
               <div class="shortDesc">${game.description}</div>
             </div>
           </div>
-          <img src="${game.image}" alt="billede af ${game.title}">
+          <img src="${game.image}" alt="Spilæsken til ${game.title}">
         </div>
         <div class="info">
           <div class="boks">Type: <span>${game.genre}</span></div>
           <div class="boks">Sværhedsgrad: <span>
+            <span class="sr-only">${game.difficulty}</span>
             ${renderRatingStars(
               game.difficulty === "Let"
                 ? 2
@@ -197,7 +199,7 @@ function toggleDrawer() {
 }
 
 function renderRatingStars(rating) {
-  let starsHTML = '<div class="rating-dices">';
+  let starsHTML = '<div class="rating-dices" aria-hidden="true">';
 
   starsHTML += `
   <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
