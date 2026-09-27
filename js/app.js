@@ -80,15 +80,29 @@ function displayGames(games) {
     return;
   }
 
-  console.log(`🎬 Viser ${games.length} game`);
+  resultater.insertAdjacentHTML("beforeend", `
+    <section class="game-section" aria-labelledby="popularHeading">
+      <h2 id="popularHeading">Mest populære</h2>
+      <div class="popular-games" id="popularGames"></div>
+    </section>
+    <section class="game-section" aria-labelledby="allHeading">
+      <h2 id="allHeading">Alle spil</h2>
+      <div class="all-games" id="allGames"></div>
+    </section>
+  `);
 
+  // De højest bedømte spil står først i den vandrette række.
+  const popularGames = [...games].sort((a, b) => b.rating - a.rating);
+  for (const game of popularGames) {
+    displayGame(game, document.getElementById("popularGames"));
+  }
   for (const game of games) {
-    displayGame(game);
+    displayGame(game, document.getElementById("allGames"));
   }
 }
 
 // #4: Render a single movie card
-function displayGame(game) {
+function displayGame(game, container) {
   const gameHTML = `
     <div class="card">
 	<div class="card__imageHolder">
@@ -104,7 +118,7 @@ function displayGame(game) {
 		<img src="${game.image}" alt="Spilæsken til ${game.title}">
 	</div>
 
-	<h2><button type="button" class="open-game" onclick="displayDrawer(${game.id})" aria-haspopup="dialog">${game.title}</button></h2>
+	<h3><button type="button" class="open-game" onclick="displayDrawer(${game.id})" aria-haspopup="dialog">${game.title}</button></h3>
 
 	<div class="card__info">
 		<div class="card__infoTAG"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg> ${game.players.min}-${game.players.max}<span class="sr-only"> spillere</span></div>
@@ -113,7 +127,7 @@ function displayGame(game) {
     </div>
     `;
 
-  resultater.insertAdjacentHTML("beforeend", gameHTML);
+  container.insertAdjacentHTML("beforeend", gameHTML);
 }
 
 getGames();

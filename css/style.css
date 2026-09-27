@@ -253,7 +253,7 @@ main::after {
   height: auto;
 }
 
-.card h2 {
+.card h3 {
   width: 100%;
   font: 'inter';
   font-weight: bold;
@@ -1260,4 +1260,55 @@ dialog.overlay::backdrop {
 .drawer.open {
   max-height: 55%;
   overflow-y: auto;
+}
+
+/* To spiloversigter med samme kortdesign. */
+main {
+  display: block;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.game-section {
+  margin-bottom: 32px;
+  min-width: 0;
+}
+
+.game-section > h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.popular-games {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 6px 4px 12px;
+  scroll-padding-inline: 4px;
+}
+
+.popular-games .card {
+  flex: 0 0 calc((100% - 32px) / 2.25);
+}
+
+.all-games {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 6px 4px;
+}
+
+.game-section .card {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .popular-games .card {
+    flex-basis: calc((100% - 80px) / 5.25);
+  }
+
+  .all-games {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
