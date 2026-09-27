@@ -57,7 +57,8 @@ html {
 /* RESPONSIVE! */
 
 header {
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, .2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+  border-bottom: 1px solid #e5e5e5;
   position: fixed;
   z-index: 100;
   width: 100%;
@@ -244,7 +245,8 @@ main::after {
   height: 215px;
   padding: 14px;
   border-radius: 18px;
-  box-shadow: 1px 1px 1px 1px #00000025;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card img {
@@ -1060,7 +1062,6 @@ form:invalid+button {
   header {
     position: relative;
     background: #fff;
-    box-shadow: none;
   }
 
   .header-top {
@@ -1265,7 +1266,7 @@ dialog.overlay::backdrop {
 /* To spiloversigter med samme kortdesign. */
 main {
   display: block;
-  max-width: 1200px;
+  max-width: none;
   margin-inline: auto;
 }
 
@@ -1283,7 +1284,7 @@ main {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  padding: 6px 4px 12px;
+  padding: 10px 8px 24px;
   scroll-padding-inline: 4px;
 }
 
@@ -1310,5 +1311,29 @@ main {
 
   .all-games {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* Større spilkort og mindre luft i siderne på desktop. */
+@media (min-width: 900px) {
+  main {
+    padding-inline: 24px;
+  }
+
+  .game-section .card {
+    height: auto;
+    min-height: 215px;
+    gap: 12px;
+  }
+
+  .game-section .card__imageHolder {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .game-section .card img {
+    height: 100%;
+    object-fit: contain;
   }
 }

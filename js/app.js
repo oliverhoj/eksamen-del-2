@@ -82,7 +82,7 @@ function displayGames(games) {
 
   resultater.insertAdjacentHTML("beforeend", `
     <section class="game-section" aria-labelledby="popularHeading">
-      <h2 id="popularHeading">Mest populære</h2>
+      <h2 id="popularHeading">Bedst ratede spil</h2>
       <div class="popular-games" id="popularGames"></div>
     </section>
     <section class="game-section" aria-labelledby="allHeading">
@@ -92,7 +92,7 @@ function displayGames(games) {
   `);
 
   // De højest bedømte spil står først i den vandrette række.
-  const popularGames = [...games].sort((a, b) => b.rating - a.rating);
+  const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
   for (const game of popularGames) {
     displayGame(game, document.getElementById("popularGames"));
   }
