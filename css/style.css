@@ -1454,3 +1454,169 @@ main {
     outline-offset: 3px;
   }
 }
+
+/* Tydeligere bedømmelser og lettere læselige spildetaljer. */
+.card__rating,
+.overlay .card__rating {
+  background: #454545;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 28px;
+  width: auto;
+  padding: 4px 8px;
+}
+
+.shortDesc,
+.drawer p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #222;
+}
+
+.boks {
+  height: auto;
+  min-height: 80px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 8px;
+}
+
+.boks .difficulty-text {
+  display: block;
+}
+
+.overlay .info {
+  padding: 12px 16px;
+}
+
+.overlay .topInfo {
+  padding: 0 20px;
+  gap: 16px;
+}
+
+.overlay .topInfo img {
+  width: 40%;
+  max-width: 170px;
+  height: auto;
+  object-fit: contain;
+  align-self: center;
+}
+
+/* Reglerne ligger efter oplysningerne, så de ikke dækker teksten. */
+dialog.overlay {
+  overflow-y: auto;
+}
+
+.overlay__header {
+  flex-shrink: 0;
+}
+
+.drawer,
+.drawer.open {
+  position: relative;
+  bottom: auto;
+  margin-top: auto;
+  max-height: none;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.drawer p {
+  max-width: 65ch;
+  align-self: flex-start;
+}
+
+.close-filters {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Spildetaljer inspireret af referenceprojektet. */
+dialog.overlay {
+  inset: 0;
+  margin: auto;
+  width: min(92%, 900px);
+  height: min(80vh, 720px);
+  max-height: 90vh;
+  border: 2px solid #8a0018;
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  transform: none;
+}
+
+dialog.overlay.overlay--active {
+  transform: none;
+}
+
+.overlay__main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+
+.overlay .topInfo {
+  padding: 0 33px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.overlay .topInfo img {
+  width: 170px;
+  height: 170px;
+  max-width: 45%;
+}
+
+.overlay .info {
+  padding: 10px 55px;
+}
+
+.overlay .drawer {
+  position: relative;
+  width: 100%;
+  margin-top: 0;
+  border-top: 2px solid #8a0018;
+  border-radius: 18px 18px 0 0;
+  background: #fff;
+  padding: 0;
+  max-height: 80px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+}
+
+.overlay .drawer.open {
+  max-height: 55%;
+  overflow-y: auto;
+}
+
+.overlay .rules-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.overlay .rules-toggle:focus-visible {
+  outline-offset: -4px;
+}
+
+.overlay #gameRules {
+  padding: 8px 16px 20px;
+}
+
+@media (max-width: 600px) {
+  .overlay .topInfo { padding: 0 16px; }
+  .overlay .info { padding: 10px 16px; }
+}

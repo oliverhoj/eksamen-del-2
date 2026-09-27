@@ -187,7 +187,7 @@ function displayDrawer(id) {
         <div class="info">
           <div class="boks">Type: <span>${game.genre}</span></div>
           <div class="boks">Sværhedsgrad: <span>
-            <span class="sr-only">${game.difficulty}</span>
+            <span class="difficulty-text">${game.difficulty}</span>
             ${renderRatingStars(
               game.difficulty === "Let"
                 ? 2
@@ -200,12 +200,12 @@ function displayDrawer(id) {
           <div class="boks">Antal spillere: <span>${game.players.min}-${
     game.players.max
   }</span></div>
-          <div class="boks">Alder: <span>+${game.age}</span></div>
-          <div class="boks">Hylde: <span>${game.shelf}</span></div>
+          <div class="boks">Alder: <span>Fra ${game.age} år</span></div>
+          <div class="boks shelf-info">Find spillet: <span>På hylde ${game.shelf}</span></div>
         </div>
       </div>
       <div class="drawer">
-        <button type="button" class="rules-toggle" onclick="toggleDrawer()" aria-expanded="false" aria-controls="gameRules">Vis spilleregler</button>
+        <button type="button" class="rules-toggle" onclick="toggleDrawer()" aria-expanded="false" aria-controls="gameRules"><span class="drawHandle" aria-hidden="true"></span><span class="drawer-label">Vis regler</span></button>
         <p id="gameRules" hidden>${game.rules}</p>
       </div>
     </dialog>
@@ -223,7 +223,7 @@ function toggleDrawer() {
   const open = drawer.classList.toggle("open");
   rules.hidden = !open;
   button.setAttribute("aria-expanded", String(open));
-  button.textContent = open ? "Skjul spilleregler" : "Vis spilleregler";
+  button.querySelector(".drawer-label").textContent = open ? "Skjul regler" : "Vis regler";
 }
 
 function renderRatingStars(rating) {
