@@ -1,8 +1,6 @@
 //#1
 //Check alle popstates og tilføj ved load for at have dynamisk url!
 
-//#6 - dices
-
 /* =========================
    FIX: Declare globals that were used but not declared
 ========================= */
@@ -19,7 +17,6 @@ const playersForm = document.querySelector(".playersForm");
 const timeForm = document.querySelector(".timeForm");
 const difficultyForm = document.querySelector(".difficultyForm");
 const genreForm = document.querySelector(".genreForm");
-const sortForm = document.querySelector(".sortForm");
 const mainHolder = document.querySelector("main");
 
 const radioInputs = document.querySelectorAll('input[type="radio"]');
@@ -68,11 +65,6 @@ async function getGames() {
     console.log("first allGames in finally line 66");
   }
 }
-
-/* =========================
-   FIX: Duplicate closeShakeAndEnableMotion removed earlier.
-   Keep ONE version later (near enableShakeDetection), so iOS gesture requirement is respected.
-========================= */
 
 // #3: Render all movies in the grid
 function displayGames(games) {
@@ -146,9 +138,6 @@ function displayDrawer(id) {
     return;
   }
 
-  /* =========================
-     FIX: use unique overlay id to avoid collision with other injected overlay
-  ========================= */
   drawHolder.innerHTML = `
     <div class="overlay" id="drawerOverlay">
       <div class="overlay__header">
@@ -255,23 +244,6 @@ function filterGames() {
     if (!value) return;
 
     switch (filter) {
-      case "sort":
-        switch (value) {
-          case "A-Z":
-            filteredGames.sort((a, b) => a.title.localeCompare(b.title));
-            break;
-          case "Z-A":
-            filteredGames.sort((a, b) => b.title.localeCompare(a.title));
-            break;
-          case "Rating":
-            filteredGames.sort((a, b) => b.rating - a.rating);
-            break;
-          case "År":
-            filteredGames.sort((a, b) => (b.year || 0) - (a.year || 0));
-            break;
-        }
-        break;
-
       case "genre": {
         const genre = Array.isArray(value) ? value : [value];
         filteredGames = filteredGames.filter((game) =>
@@ -393,11 +365,6 @@ if (coords) {
     genreForm.style.display = "none";
   }
 
-  if (filter == "sort") {
-    sortForm.style.display = "flex";
-  } else {
-    sortForm.style.display = "none";
-  }
 }
 
 const greenIcon = L.icon({
@@ -454,7 +421,6 @@ const filters = {
   genre: ["Familiespil", "Quiz", "Strategi", "Terninger", "Kortspil"],
   difficulty: ["Let", "Mellem", "Svær"],
   time: ["20 min.", "30 min.", "60 min.", "120 min."],
-  sort: ["A-Z", "Z-A", "År", "Rating"],
 };
 
 let activeFilter = null;
@@ -491,7 +457,6 @@ function hideAllSubForms() {
   if (difficultyForm) difficultyForm.style.display = "none";
   if (timeForm) timeForm.style.display = "none";
   if (genreForm) genreForm.style.display = "none";
-  if (sortForm) sortForm.style.display = "none";
 }
 
 playersForm.addEventListener("change", (e) => {
@@ -556,26 +521,6 @@ genreForm.addEventListener("click", (e) => {
   filterGames();
 });
 
-sortForm.addEventListener("click", (e) => {
-  const chip = e.target.closest(".chip");
-  if (!chip) return;
-
-  const sort = chip.dataset.sort;
-
-  selected.sort = sort;
-
-  sortForm
-    .querySelectorAll(".chip")
-    .forEach((c) => c.classList.remove("active"));
-
-  chip.classList.add("active");
-
-  const params = new URLSearchParams(selected);
-  history.replaceState({}, "", "?" + params.toString());
-
-  filterGames();
-});
-
 /* =========================
    FIX: remove duplicate removeChip definitions
    Keep ONE: removeSelectedFilter(filter)
@@ -586,42 +531,6 @@ function removeSelectedFilter(filter) {
 
   const params = new URLSearchParams(selected);
   history.replaceState({}, "", "?" + params.toString());
-}
-
-/* 
-Hej kære lærer, kom i også så dybt ned i koden?
-Sig skål til en af os (Simon, Mathilde, Oliver eller Jacob)
-Så udløser i en øl i basement, fordi i fandt vores easter egg!
-*/
-function shakeItToTheMax() {
-  console.log("Shake it to the max!");
-
-  closeShakePopup();
-
-  function playSound() {
-    const audio = new Audio("./assets/audio/shake.mp3");
-    audio.play();
-
-    navigator.vibrate(100);
-    navigator.vibrate(400);
-    navigator.vibrate(200);
-  }
-  playSound();
-
-  document.body.classList.add("shake");
-  setTimeout(() => {
-    document.body.classList.remove("shake");
-  }, 2000);
-}
-
-function closeShakePopup() {
-  const popup = document.getElementById("shakePopup");
-  if (popup) popup.style.display = "none";
-}
-
-function openShakePopup() {
-  const popup = document.getElementById("shakePopup");
-  if (popup) popup.style.display = "flex";
 }
 
 window.addEventListener("popstate", () => {
@@ -680,201 +589,6 @@ window.addEventListener("popstate", () => {
 
   displayGames(filteredGames);
 });
-
-/* =========================
-   FIX: duplicate id="overlay" collision
-   - This injected overlay is for showGame()
-   - Drawer uses #drawerOverlay
-========================= */
-document.body.insertAdjacentHTML(
-  "beforeend",
-  `
-  <div id="gameOverlay" style="display:none;">
-    <div class="game-card" id="gameCard"></div>
-  </div>
-  <canvas id="confettiCanvas" style="position:fixed; inset:0; pointer-events:none; z-index:10000;"></canvas>
-`
-);
-
-let lastX = 0,
-  lastY = 0,
-  lastZ = 0;
-let lastUpdate = 0;
-let lastShake = 0;
-const SHAKE_THRESHOLD = 700;
-const COOLDOWN = 1000;
-
-/* =========================
-   FIX: handleMotion must be a real identifier, not only a named function-expression on window
-========================= */
-function handleMotion(e) {
-  const acc = e.accelerationIncludingGravity;
-  if (!acc) return;
-
-  const curTime = Date.now();
-
-  if (curTime - lastUpdate > 100) {
-    const diffTime = curTime - lastUpdate;
-    lastUpdate = curTime;
-
-    const { x, y, z } = acc;
-    const speed =
-      (Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime) * 10000;
-
-    if (speed > SHAKE_THRESHOLD && curTime - lastShake > COOLDOWN) {
-      if (!allGames.length) {
-        console.warn("⚠️ No games loaded yet — ignoring shake");
-        return;
-      }
-
-      lastShake = curTime;
-      const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
-
-      shakeItToTheMax();
-      startConfetti();
-      displayDrawer(randomGame.id);
-    }
-
-    lastX = x;
-    lastY = y;
-    lastZ = z;
-  }
-}
-window.handleMotion = handleMotion; // keep your access pattern
-
-function testForIphone() {
-  closeShakePopup();
-
-  const randomGame2 = allGames[Math.floor(Math.random() * allGames.length)];
-
-  shakeItToTheMax();
-  startConfetti();
-  displayDrawer(randomGame2.id);
-}
-
-function showGame(game) {
-  const overlay = document.getElementById("gameOverlay");
-  const card = document.getElementById("gameCard");
-  if (!overlay || !card) return;
-
-  card.innerHTML = `
-    <button class="close">&times;</button>
-    <div class="rating">⭐ ${game.rating}</div>
-    <img class="game-img" src="${game.image}" alt="${game.title}">
-    <h2>${game.title.toUpperCase()}</h2>
-    <p class="desc">${game.description}</p>
-    <div class="grid">
-      <div><strong>Type:</strong> ${game.genre}</div>
-      <div><strong>Sværhedsgrad:</strong> ${game.difficulty}</div>
-      <div><strong>Spilletid:</strong> ${game.playtime} min</div>
-      <div><strong>Antal spillere:</strong> ${game.players.min}–${
-    game.players.max
-  }</div>
-      <div><strong>Alder:</strong> +${game.age}</div>
-      <div><strong>Hylde:</strong> ${game.shelf}</div>
-    </div>
-    <h3>Regler:</h3>
-    <p class="rules">${game.rules}</p>
-  `;
-
-  overlay.style.display = "flex";
-  card.querySelector(".close").onclick = () => (overlay.style.display = "none");
-}
-
-document.addEventListener("click", (e) => {
-  const overlay = document.getElementById("gameOverlay");
-  if (overlay && e.target === overlay) overlay.style.display = "none";
-});
-
-// Only attach devicemotion after permission is granted (for iOS)
-function enableShakeDetection() {
-  console.log("🔧 Attempting to enable shake detection...");
-  window.removeEventListener("devicemotion", handleMotion); // FIX: now valid
-
-  if (
-    typeof DeviceMotionEvent !== "undefined" &&
-    typeof DeviceMotionEvent.requestPermission === "function"
-  ) {
-    console.log("🍏 iOS detected — requesting motion permission...");
-    DeviceMotionEvent.requestPermission()
-      .then((response) => {
-        console.log("📱 Motion permission response:", response);
-        if (response === "granted") {
-          console.log(
-            "✅ Permission granted — adding devicemotion listener..."
-          );
-          window.addEventListener("devicemotion", handleMotion, true);
-          console.log("🟢 Listener attached successfully on iOS!");
-        } else {
-          alert("⚠️ Du skal give tilladelse til bevægelse for at ryste!");
-        }
-      })
-      .catch((err) => {
-        console.error("❌ Motion permission request failed:", err);
-      });
-  } else {
-    console.log("🤖 Non-iOS device — adding listener directly...");
-    window.addEventListener("devicemotion", handleMotion, true);
-    console.log("🟢 Listener attached successfully (non-iOS)!");
-  }
-}
-
-/* =========================
-   FIX: keep ONLY one closeShakeAndEnableMotion (user gesture-safe)
-========================= */
-function closeShakeAndEnableMotion() {
-  closeShakePopup();
-  enableShakeDetection();
-}
-
-// 🎉 Confetti effect — now in front of everything
-function startConfetti() {
-  const canvas = document.getElementById("confettiCanvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const W = (canvas.width = window.innerWidth);
-  const H = (canvas.height = window.innerHeight);
-
-  const pieces = [];
-  const colors = ["#ff0", "#f0f", "#0ff", "#f55", "#5f5", "#55f"];
-
-  for (let i = 0; i < 777; i++) {
-    pieces.push({
-      x: Math.random() * W,
-      y: (Math.random() * -H) / 2,
-      w: 1 + Math.random() * 6,
-      h: 1 + Math.random() * 6,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      speed: 2 + Math.random() * 4,
-      tilt: Math.random() * 10,
-    });
-  }
-
-  let duration = 7000;
-  let start = null;
-
-  function drawConfetti(ts) {
-    if (!start) start = ts;
-    const progress = ts - start;
-    ctx.clearRect(0, 0, W, H);
-
-    pieces.forEach((p) => {
-      p.y += p.speed;
-      p.x += Math.sin(p.tilt / 10);
-      p.tilt += 0.5;
-      ctx.fillStyle = p.color;
-      ctx.fillRect(p.x, p.y, p.w, p.h);
-    });
-
-    if (progress < duration) {
-      requestAnimationFrame(drawConfetti);
-    } else {
-      ctx.clearRect(0, 0, W, H);
-    }
-  }
-
-  requestAnimationFrame(drawConfetti);
-}
 
 document.getElementById("searchInput")?.addEventListener("input", (e) => {
   console.log("first");
