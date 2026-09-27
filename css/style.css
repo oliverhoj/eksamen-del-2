@@ -1200,3 +1200,64 @@ form:invalid+button {
   white-space: nowrap;
   border: 0;
 }
+
+/* Spilkortet kan åbnes med både mus og tastatur. */
+.card {
+  position: relative;
+}
+
+.open-game {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.open-game::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+}
+
+.open-game:focus-visible::after,
+.close:focus-visible,
+.rules-toggle:focus-visible {
+  outline: 3px solid #721c24;
+  outline-offset: 3px;
+}
+
+/* Dialogen gør resten af siden inaktiv, mens spildetaljerne er åbne. */
+dialog.overlay {
+  margin: auto 0 0;
+  max-width: none;
+  max-height: 90vh;
+  border: 0;
+}
+
+dialog.overlay:not([open]) {
+  display: none;
+}
+
+dialog.overlay::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.close,
+.rules-toggle {
+  min-height: 44px;
+  min-width: 44px;
+  cursor: pointer;
+}
+
+.rules-toggle {
+  padding: 8px 16px;
+  font: inherit;
+  color: #721c24;
+  flex-shrink: 0;
+}
+
+.drawer.open {
+  max-height: 55%;
+  overflow-y: auto;
+}
