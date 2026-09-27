@@ -45,6 +45,14 @@
                 <img src="./assets/img/logo.webp" width="50" alt="logo">
             </a>
 
+            <button type="button" class="filter-toggle" aria-label="Vis filtre" aria-expanded="false" aria-controls="desktopFilters">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                    <circle cx="8" cy="6" r="2" fill="currentColor" />
+                    <circle cx="16" cy="12" r="2" fill="currentColor" />
+                    <circle cx="8" cy="18" r="2" fill="currentColor" />
+                </svg>
+            </button>
             <div class="searchAndFilters">
                 <div class="search">
 
@@ -213,6 +221,66 @@
             </div>
 
         </div>
+        <section id="desktopFilters" class="desktop-filters" aria-label="Filtrer spil" hidden>
+            <button type="button" class="close-filters" aria-label="Luk filtre">×</button>
+            <div class="filter-columns">
+                <div class="filter-group" data-group="location">
+                    <h2>Sted</h2>
+                    <div class="filter-options">
+                        <button type="button" data-value="" aria-pressed="false">Alle</button>
+                        <button type="button" data-value="aalborg" aria-pressed="false">Aalborg</button>
+                        <button type="button" data-value="aarhus-vestergade" aria-pressed="false">Aarhus Vestergade</button>
+                        <button type="button" data-value="aarhus-fredensgade" aria-pressed="false">Aarhus Fredensgade</button>
+                        <button type="button" data-value="kolding" aria-pressed="false">Kolding</button>
+                        <button type="button" data-value="odense" aria-pressed="false">Odense</button>
+                    </div>
+                </div>
+                <div class="filter-group" data-group="players">
+                    <h2>Antal spillere</h2>
+                    <div class="filter-options">
+                        <button type="button" data-value="" aria-pressed="false">Alle</button>
+                        <button type="button" data-value="2" aria-pressed="false">2</button>
+                        <button type="button" data-value="4" aria-pressed="false">4</button>
+                        <button type="button" data-value="6" aria-pressed="false">6</button>
+                        <button type="button" data-value="8" aria-pressed="false">8</button>
+                        <button type="button" data-value="10" aria-pressed="false">10</button>
+                    </div>
+                </div>
+                <div class="filter-group" data-group="genre">
+                    <h2>Genre</h2>
+                    <div class="filter-options">
+                        <button type="button" data-value="" aria-pressed="false">Alle</button>
+                        <button type="button" data-value="Familie" aria-pressed="false">Familie</button>
+                        <button type="button" data-value="Strategi" aria-pressed="false">Strategi</button>
+                        <button type="button" data-value="Party" aria-pressed="false">Party</button>
+                        <button type="button" data-value="Kortspil" aria-pressed="false">Kortspil</button>
+                        <button type="button" data-value="Ordspil" aria-pressed="false">Ordspil</button>
+                        <button type="button" data-value="Brætspil" aria-pressed="false">Brætspil</button>
+                        <button type="button" data-value="Kooperativt" aria-pressed="false">Kooperativt</button>
+                    </div>
+                </div>
+                <div class="filter-group" data-group="difficulty">
+                    <h2>Sværhedsgrad</h2>
+                    <div class="filter-options">
+                        <button type="button" data-value="" aria-pressed="false">Alle</button>
+                        <button type="button" data-value="Let" aria-pressed="false">Let</button>
+                        <button type="button" data-value="Mellem" aria-pressed="false">Mellem</button>
+                        <button type="button" data-value="Svær" aria-pressed="false">Svær</button>
+                    </div>
+                </div>
+                <div class="filter-group" data-group="time">
+                    <h2>Spilletid</h2>
+                    <div class="filter-options">
+                        <button type="button" data-value="" aria-pressed="false">Alle</button>
+                        <button type="button" data-value="20" aria-pressed="false">Maks 20 min.</button>
+                        <button type="button" data-value="30" aria-pressed="false">Maks 30 min.</button>
+                        <button type="button" data-value="60" aria-pressed="false">Maks 60 min.</button>
+                        <button type="button" data-value="120" aria-pressed="false">Maks 120 min.</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="reset-filters">Nulstil filtre</button>
+        </section>
     </header>
 
 

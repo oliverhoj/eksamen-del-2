@@ -237,6 +237,7 @@ function closeDrawer() {
 }
 
 function filterGames() {
+  updateDesktopFilters();
   let filteredGames = [...allGames];
 
   Object.keys(selected).forEach((filter) => {
@@ -247,7 +248,7 @@ function filterGames() {
       case "genre": {
         const genre = Array.isArray(value) ? value : [value];
         filteredGames = filteredGames.filter((game) =>
-          genre.includes(game.genre)
+          (genre.length === 0 || genre.includes(game.genre))
         );
         break;
       }
@@ -762,3 +763,66 @@ clearFiltersButton.addEventListener("click", (event) => {
   filterGames();
   clearFiltersButton.focus();
 });
+
+
+const filterToggle = document.querySelector(".filter-toggle");
+const desktopFilters = document.getElementById("desktopFilters");
+
+filterToggle.addEventListener("click", () => {
+  desktopFilters.hidden = !desktopFilters.hidden;
+  filterToggle.setAttribute("aria-expanded", String(!desktopFilters.hidden));
+});
+
+document.querySelector(".close-filters").addEventListener("click", () => {
+  desktopFilters.hidden = true;
+  filterToggle.setAttribute("aria-expanded", "false");
+  filterToggle.focus();
+});
+
+desktopFilters.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-value]");
+  if (!button) return;
+
+  const filter = button.closest(".filter-group").dataset.group;
+  const value = button.dataset.value;
+
+  if (!value) {
+    delete selected[filter];
+  } else if (filter === "genre") {
+    const genres = selected.genre || [];
+    selected.genre = genres.includes(value)
+      ? genres.filter((genre) => genre !== value)
+      : [...genres, value];
+  } else {
+    selected[filter] = value;
+  }
+
+  const params = new URLSearchParams(selected);
+  history.replaceState({}, "", window.location.pathname + "?" + params.toString());
+  filterGames();
+});
+
+function updateDesktopFilters() {
+  document.querySelectorAll(".filter-group").forEach((group) => {
+    const value = selected[group.dataset.group];
+    group.querySelectorAll("button").forEach((button) => {
+      const option = button.dataset.value;
+      let active;
+      if (option === "") {
+        active = !value || (Array.isArray(value) && value.length === 0);
+      } else if (Array.isArray(value)) {
+        active = value.includes(option);
+      } else {
+        active = String(value) === option;
+      }
+      button.setAttribute("aria-pressed", String(active));
+    });
+  });
+}
+
+document.querySelector(".reset-filters").addEventListener("click", () => {
+  clearFiltersButton.click();
+  document.querySelector(".reset-filters").focus();
+});
+
+updateDesktopFilters();
