@@ -80,22 +80,32 @@ function displayGames(games) {
     return;
   }
 
+  const hasFilters = Object.values(selected).some((value) => {
+    if (Array.isArray(value)) return value.length > 0;
+    return value != null && String(value).trim() !== "" && value !== "alle";
+  });
+
+  if (!hasFilters) {
+    resultater.insertAdjacentHTML("beforeend", `
+      <section class="game-section" aria-labelledby="popularHeading">
+        <h2 id="popularHeading">Bedst ratede spil</h2>
+        <div class="popular-games" id="popularGames"></div>
+      </section>
+    `);
+
+    const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
+    for (const game of popularGames) {
+      displayGame(game, document.getElementById("popularGames"));
+    }
+  }
+
   resultater.insertAdjacentHTML("beforeend", `
-    <section class="game-section" aria-labelledby="popularHeading">
-      <h2 id="popularHeading">Bedst ratede spil</h2>
-      <div class="popular-games" id="popularGames"></div>
-    </section>
     <section class="game-section" aria-labelledby="allHeading">
-      <h2 id="allHeading">Alle spil</h2>
+      <h2 id="allHeading">${hasFilters ? "Spil der matcher dine valg" : "Alle spil"}</h2>
       <div class="all-games" id="allGames"></div>
     </section>
   `);
 
-  // De højest bedømte spil står først i den vandrette række.
-  const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
-  for (const game of popularGames) {
-    displayGame(game, document.getElementById("popularGames"));
-  }
   for (const game of games) {
     displayGame(game, document.getElementById("allGames"));
   }
