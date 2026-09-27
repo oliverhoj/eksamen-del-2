@@ -95,7 +95,7 @@ function displayGames(games) {
 
     const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
     for (const game of popularGames) {
-      displayGame(game, document.getElementById("popularGames"));
+      displayGame(game, document.getElementById("popularGames"), document.getElementById("popularGames").children.length < 6 ? "eager" : "lazy");
     }
   }
 
@@ -107,12 +107,12 @@ function displayGames(games) {
   `);
 
   for (const game of games) {
-    displayGame(game, document.getElementById("allGames"));
+    displayGame(game, document.getElementById("allGames"), hasFilters && document.getElementById("allGames").children.length < 5 ? "eager" : "lazy");
   }
 }
 
 // #4: Render a single movie card
-function displayGame(game, container) {
+function displayGame(game, container, loading = "lazy") {
   const gameHTML = `
     <div class="card">
 	<div class="card__imageHolder">
@@ -125,7 +125,7 @@ function displayGame(game, container) {
 
 		</div>
 
-		<img src="${game.image}" alt="Spilæsken til ${game.title}">
+		<img src="${game.image}" alt="Spilæsken til ${game.title}" width="640" height="640" loading="${loading}" decoding="async">
 	</div>
 
 	<h3><button type="button" class="open-game" onclick="displayDrawer(${game.id})" aria-haspopup="dialog">${game.title}</button></h3>
@@ -182,7 +182,7 @@ function displayDrawer(id) {
               <div class="shortDesc">${game.description}</div>
             </div>
           </div>
-          <img src="${game.image}" alt="Spilæsken til ${game.title}">
+          <img src="${game.image}" alt="Spilæsken til ${game.title}" width="640" height="640" decoding="async">
         </div>
         <div class="info">
           <div class="boks">Type: <span>${game.genre}</span></div>
