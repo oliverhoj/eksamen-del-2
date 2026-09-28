@@ -73,6 +73,21 @@ header {
   height: 70px;
 }
 
+.header-top > a {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-top > a img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .search {
   display: flex;
   justify-items: center;
@@ -1069,8 +1084,10 @@ form:invalid+button {
     gap: 20px;
   }
 
-  .header-top > a img {
-    width: 90px;
+  .header-top > a {
+    width: 72px;
+    height: 72px;
+    flex-basis: 72px;
   }
 
   .filter-toggle {
