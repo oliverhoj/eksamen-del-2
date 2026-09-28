@@ -1,13 +1,13 @@
 // Service worker - caches everything (precache + runtime cache)
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `spilcafe-cache-${CACHE_VERSION}`;
 const PRECACHE_URLS = [
     '/', '/index.html',
     '/css/style.css?v=8',
-    '/js/app.js?v=7',
+    '/js/app.js?v=8',
     '/manifest.json',
-    '/assets/img/logo-160.png', '/assets/img/favicon.ico',
+    '/assets/img/logo-160.png', '/assets/img/favicon.ico', '/assets/img/games/skak-card.jpg',
     '/assets/fonts/Inter-Latin.woff2', '/assets/fonts/LuckiestGuy-Regular.woff2'
     // tilføj flere kendte assets her hvis ønsket
 ];

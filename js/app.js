@@ -141,7 +141,12 @@ function displayGames(games) {
 }
 
 // #4: Render a single movie card
+function getCardImagePath(imagePath) {
+  return imagePath.replace(/\.webp$/i, "-card.jpg");
+}
+
 function displayGame(game, container, loading = "lazy", highPriority = false) {
+  const cardImage = getCardImagePath(game.image);
   const gameHTML = `
     <div class="card">
 	<div class="card__imageHolder">
@@ -154,7 +159,7 @@ function displayGame(game, container, loading = "lazy", highPriority = false) {
 
 		</div>
 
-		<img src="${game.image}" alt="Spilæsken til ${game.title}" width="640" height="640" loading="${loading}" decoding="async"${highPriority ? ' fetchpriority="high"' : ""}>
+		<img src="${cardImage}" alt="Spilæsken til ${game.title}" width="320" height="320" loading="${loading}" decoding="async"${highPriority ? ' fetchpriority="high"' : ""}>
 	</div>
 
 	<h3><button type="button" class="open-game" onclick="displayDrawer(${game.id})" aria-haspopup="dialog">${game.title}</button></h3>
