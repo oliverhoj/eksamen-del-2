@@ -1276,9 +1276,52 @@ main {
   min-width: 0;
 }
 
-.game-section > h2 {
-  font-size: 24px;
+.game-section__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 16px;
+}
+
+.game-section__header h2 {
+  font-family: "Luckiest Guy", "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.game-section__header p {
+  margin-top: 5px;
+  color: #606060;
+  font-size: 14px;
+}
+
+.game-section__eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: #8a1115;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.game-section--popular {
+  padding: 20px 16px 4px;
+  border: 1px solid #f0c7c8;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fff7f7 0%, #fff 70%);
+}
+
+.game-section--popular .game-section__header h2 span {
+  color: #f2b517;
+  text-shadow: 0 1px 0 #b77f00;
+}
+
+.game-section--all {
+  padding-top: 28px;
+  border-top: 2px solid #dedede;
 }
 
 .popular-games {
@@ -1341,6 +1384,15 @@ main {
 
 /* Mobil bruger de samme filterknapper som desktop. */
 @media (max-width: 899px) {
+  .game-section--popular {
+    margin-inline: -4px;
+    padding-inline: 12px;
+  }
+
+  .game-section--all {
+    padding-top: 24px;
+  }
+
   header {
     position: relative;
     background: #fff;

@@ -87,8 +87,14 @@ function displayGames(games) {
 
   if (!hasFilters) {
     resultater.insertAdjacentHTML("beforeend", `
-      <section class="game-section" aria-labelledby="popularHeading">
-        <h2 id="popularHeading">Bedst ratede spil</h2>
+      <section class="game-section game-section--popular" aria-labelledby="popularHeading">
+        <div class="game-section__header">
+          <div>
+            <span class="game-section__eyebrow">Spillernes favoritter</span>
+            <h2 id="popularHeading"><span aria-hidden="true">★</span> Bedst ratede spil</h2>
+            <p>De 9 spil med den højeste bedømmelse</p>
+          </div>
+        </div>
         <div class="popular-games" id="popularGames"></div>
       </section>
     `);
@@ -100,8 +106,14 @@ function displayGames(games) {
   }
 
   resultater.insertAdjacentHTML("beforeend", `
-    <section class="game-section" aria-labelledby="allHeading">
-      <h2 id="allHeading">${hasFilters ? "Spil der matcher dine valg" : "Alle spil"}</h2>
+    <section class="game-section game-section--all" aria-labelledby="allHeading">
+      <div class="game-section__header">
+        <div>
+          <span class="game-section__eyebrow">${hasFilters ? "Søgeresultat" : "Hele samlingen"}</span>
+          <h2 id="allHeading">${hasFilters ? "Spil der matcher dine valg" : "Alle spil"}</h2>
+          <p>${games.length} spil i denne oversigt</p>
+        </div>
+      </div>
       <div class="all-games" id="allGames"></div>
     </section>
   `);
