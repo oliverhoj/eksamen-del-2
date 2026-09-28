@@ -18,6 +18,7 @@ const timeForm = document.querySelector(".timeForm");
 const difficultyForm = document.querySelector(".difficultyForm");
 const genreForm = document.querySelector(".genreForm");
 const mainHolder = document.querySelector("main");
+const INITIAL_GAME_COUNT = 10;
 
 const radioInputs = document.querySelectorAll('input[type="radio"]');
 const underline = document.querySelector(".underline");
@@ -70,7 +71,7 @@ async function getGames() {
 function displayGames(games) {
   resultater.innerHTML = '<h1 id="gamesHeading" class="sr-only">Find et spil hos Spilcaféen</h1>';
   document.getElementById("chip-info").innerText =
-    `${games.length} af ${allGames.length} spil vises`;
+    `${games.length} af ${allGames.length} spil fundet`;
 
   if (!games.length) {
     resultater.insertAdjacentHTML(
@@ -100,9 +101,10 @@ function displayGames(games) {
     `);
 
     const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
-    for (const game of popularGames) {
-      displayGame(game, document.getElementById("popularGames"), document.getElementById("popularGames").children.length < 6 ? "eager" : "lazy");
-    }
+    const popularContainer = document.getElementById("popularGames");
+    popularGames.forEach((game, index) => {
+      displayGame(game, popularContainer, index === 0 ? "eager" : "lazy", index === 0);
+    });
   }
 
   resultater.insertAdjacentHTML("beforeend", `
@@ -115,16 +117,31 @@ function displayGames(games) {
         </div>
       </div>
       <div class="all-games" id="allGames"></div>
+      ${games.length > INITIAL_GAME_COUNT ? `<button type="button" class="show-more-games" aria-controls="allGames">Vis ${games.length - INITIAL_GAME_COUNT} flere spil</button>` : ""}
     </section>
   `);
 
-  for (const game of games) {
-    displayGame(game, document.getElementById("allGames"), hasFilters && document.getElementById("allGames").children.length < 5 ? "eager" : "lazy");
-  }
+  const allGamesContainer = document.getElementById("allGames");
+  const initialGames = games.slice(0, INITIAL_GAME_COUNT);
+  initialGames.forEach((game, index) => {
+    const isPriorityImage = hasFilters && index === 0;
+    displayGame(game, allGamesContainer, isPriorityImage ? "eager" : "lazy", isPriorityImage);
+  });
+
+  document.querySelector(".show-more-games")?.addEventListener("click", (event) => {
+    games.slice(INITIAL_GAME_COUNT).forEach((game) => {
+      displayGame(game, allGamesContainer);
+    });
+    const firstNewGame = allGamesContainer.children[INITIAL_GAME_COUNT]
+      ?.querySelector(".open-game");
+    event.currentTarget.remove();
+    document.getElementById("chip-info").innerText = `Alle ${games.length} spil vises`;
+    firstNewGame?.focus();
+  }, { once: true });
 }
 
 // #4: Render a single movie card
-function displayGame(game, container, loading = "lazy") {
+function displayGame(game, container, loading = "lazy", highPriority = false) {
   const gameHTML = `
     <div class="card">
 	<div class="card__imageHolder">
@@ -137,7 +154,7 @@ function displayGame(game, container, loading = "lazy") {
 
 		</div>
 
-		<img src="${game.image}" alt="Spilæsken til ${game.title}" width="640" height="640" loading="${loading}" decoding="async">
+		<img src="${game.image}" alt="Spilæsken til ${game.title}" width="640" height="640" loading="${loading}" decoding="async"${highPriority ? ' fetchpriority="high"' : ""}>
 	</div>
 
 	<h3><button type="button" class="open-game" onclick="displayDrawer(${game.id})" aria-haspopup="dialog">${game.title}</button></h3>
@@ -405,7 +422,7 @@ if (coords) {
 
 function makeMap(lat, lon, zoom = 6) {
 const greenIcon = L.icon({
-  iconUrl: "./assets/img/logo.webp", //  absolute path
+  iconUrl: "./assets/img/logo-160.png",
   iconSize: [50, 37],
   iconAnchor: [25, 37], //  THIS IS REQUIRED
   popupAnchor: [0, -37],

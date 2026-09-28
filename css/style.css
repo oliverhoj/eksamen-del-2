@@ -1,21 +1,18 @@
 @font-face {
   font-family: 'Inter';
-  src: url('../assets/fonts/Inter.ttf') format('truetype');
-  font-weight: 400;
+  src: url('../assets/fonts/Inter-Latin.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
-/*/@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-*/
-/* @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+@font-face {
+  font-family: 'Luckiest Guy';
+  src: url('../assets/fonts/LuckiestGuy-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  
-  font-family: 'JetBrains Mono', monospace;
-}*/
+  font-display: swap;
+}
 
 
 * {
@@ -1341,6 +1338,27 @@ main {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 6px 4px;
+}
+
+.show-more-games {
+  display: block;
+  min-height: 44px;
+  margin: 24px auto 0;
+  padding: 10px 20px;
+  border: 2px solid #8a1115;
+  border-radius: 10px;
+  color: #721c24;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.show-more-games:hover {
+  background: #fff2f2;
+}
+
+.show-more-games:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 3px;
 }
 
 .game-section .card {
