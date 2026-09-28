@@ -56,11 +56,11 @@ async function getGames() {
 
     allGames = await response.json();
 
-    displayGames(allGames);
+    readFiltersFromUrl();
   } catch (error) {
     console.error("❌ Kunne ikke hente games:", error);
     resultater.innerHTML =
-      '<div class="game-list-empty"><p>🚨 Kunne ikke hente Games.</p></div>';
+      '<div class="game-list-empty"><p> Kunne ikke hente Games.</p></div>';
   } finally {
     console.log("first allGames in finally line 66");
   }
@@ -391,15 +391,16 @@ if (coords) {
 
 }
 
+function makeMap(lat, lon, zoom = 6) {
 const greenIcon = L.icon({
-  iconUrl: "/assets/img/logo.webp", // 🔥 absolute path
+  iconUrl: "./assets/img/logo.webp", //  absolute path
   iconSize: [50, 37],
-  iconAnchor: [25, 37], // 🔥 THIS IS REQUIRED
+  iconAnchor: [25, 37], //  THIS IS REQUIRED
   popupAnchor: [0, -37],
 });
 
 
-function makeMap(lat, lon, zoom = 6) {
+
   if (!map) {
     map = L.map("map").setView([lat, lon], zoom);
     window.map = map;
@@ -557,100 +558,27 @@ function removeSelectedFilter(filter) {
   history.replaceState({}, "", "?" + params.toString());
 }
 
-window.addEventListener("popstate", () => {
+// Gendan filtrene, når et link åbnes eller browserens tilbageknap bruges.
+function readFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  const contextStore = {};
-
-  params.forEach((value, key) => {
-    contextStore[key] = value;
-  });
-
-  let filteredGames = [...allGames];
-
-  if (contextStore.genre) {
-    const genre = contextStore.genre.split(",");
-    selected.genre = genre;
-
-    document.querySelectorAll(".genreForm .chip").forEach((chip) => {
-      chip.classList.toggle("active", genre.includes(chip.dataset.genre));
-    });
+  selected = {};
+  for (const key of ["location", "players", "time", "difficulty", "search", "genre"]) {
+    const value = params.get(key);
+    if (value && value !== "null") {
+      selected[key] = key === "genre" ? value.split(",") : value;
+    }
   }
+  document.getElementById("searchInput").value = selected.search || "";
+  filterGames();
+}
 
-  if (contextStore.difficulty) {
-    filteredGames = filteredGames.filter(
-      (game) => norm(game.location) === norm(contextStore.location)
-    );
-  }
-
-  if (contextStore.players) {
-    const players = Number(contextStore.players);
-    filteredGames = filteredGames.filter(
-      (game) => game.players.min <= players && game.players.max >= players
-    );
-  }
-
-  if (contextStore.time) {
-    const time = parseInt(contextStore.time, 10);
-    filteredGames = filteredGames.filter((game) => game.playtime <= time);
-  }
-
-  if (contextStore.search) {
-    const searchTerm = contextStore.search.toLowerCase();
-    filteredGames = filteredGames.filter((game) =>
-      game.title.toLowerCase().includes(searchTerm)
-    );
-  }
-
-  if (contextStore.location) {
-    filteredGames = filteredGames.filter(
-      (game) => game.location === contextStore.location
-    );
-  }
-
-  if (contextStore.location) {
-    flyToLocation(contextStore.location);
-  }
-
-  displayGames(filteredGames);
-});
+window.addEventListener("popstate", readFiltersFromUrl);
 
 document.getElementById("searchInput")?.addEventListener("input", (e) => {
   console.log("first");
-  selected.search = e.target.value;
-
-  const audios = document.querySelectorAll("audio");
-  audios.forEach((a) => {
-    if (
-      (e.target.value.toLowerCase() !== "maui" && a.src.includes("maui.mp3")) ||
-      (e.target.value.toLowerCase() !== "spaces" &&
-        a.src.includes("spaces.mp3")) ||
-      (e.target.value.toLowerCase() !== "shake" &&
-        a.src.includes("shakeittothemax.mp3"))
-    ) {
-      a.pause();
-      a.currentTime = 0;
-    }
-  });
-
-  if (e.target.value.toLowerCase() == "maui") {
-    const audio = new Audio("./assets/audio/maui.mp3");
-    audio.play();
-    document.body.appendChild(audio);
-  }
-
-  if (e.target.value.toLowerCase() == "spaces") {
-    const audio = new Audio("./assets/audio/spaces.mp3");
-    audio.play();
-    document.body.appendChild(audio);
-  }
-
-  if (e.target.value.toLowerCase() == "shake") {
-    const audio = new Audio("./assets/audio/shakeittothemax.mp3");
-    audio.play();
-    document.body.appendChild(audio);
-  }
-
-  filterGames();
+  selected.search = e.target.value.trim();
+  const params = new URLSearchParams(selected);
+  history.replaceState({}, "", window.location.pathname + "?" + params.toString());
 });
 
 const locationCoords = {

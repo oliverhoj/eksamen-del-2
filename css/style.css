@@ -3,6 +3,7 @@
   src: url('../assets/fonts/Inter.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 /*/@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
@@ -1619,4 +1620,36 @@ dialog.overlay.overlay--active {
 @media (max-width: 600px) {
   .overlay .topInfo { padding: 0 16px; }
   .overlay .info { padding: 10px 16px; }
+}
+
+/* Kortene skal kunne rumme billeder og lange titler på små skærme. */
+@media (max-width: 899px) {
+  .game-section .card {
+    height: auto;
+    min-height: 215px;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .game-section .card__imageHolder {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .game-section .card img {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .card h3,
+  .overlay .gameinfo {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .card__info {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }
