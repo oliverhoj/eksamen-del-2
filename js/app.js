@@ -93,14 +93,14 @@ function displayGames(games) {
           <div>
             <span class="game-section__eyebrow">Spillernes favoritter</span>
             <h2 id="popularHeading"><span aria-hidden="true">★</span> Bedst ratede spil</h2>
-            <p>De 9 spil med den højeste bedømmelse</p>
+            <p>De 10 spil med den højeste bedømmelse</p>
           </div>
         </div>
         <div class="popular-games" id="popularGames"></div>
       </section>
     `);
 
-    const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 9);
+    const popularGames = [...games].sort((a, b) => b.rating - a.rating).slice(0, 10);
     const popularContainer = document.getElementById("popularGames");
     popularGames.forEach((game, index) => {
       displayGame(game, popularContainer, index === 0 ? "eager" : "lazy", index === 0);
