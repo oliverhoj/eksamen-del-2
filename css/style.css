@@ -1077,16 +1077,16 @@ form:invalid+button {
   }
 
   .header-top {
-    height: 120px;
-    padding: 24px 32px;
+    height: 88px;
+    padding: 8px 32px;
     justify-content: flex-start;
     gap: 20px;
   }
 
   .header-top > a {
-    width: 72px;
-    height: 72px;
-    flex-basis: 72px;
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
   }
 
   .filter-toggle {
@@ -1103,7 +1103,7 @@ form:invalid+button {
   }
 
   .searchAndFilters {
-    width: 380px;
+    width: 520px;
     margin-right: auto;
   }
 

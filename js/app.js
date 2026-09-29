@@ -93,7 +93,6 @@ function displayGames(games) {
           <div>
             <span class="game-section__eyebrow">Spillernes favoritter</span>
             <h2 id="popularHeading"><span aria-hidden="true">★</span> Bedst ratede spil</h2>
-            <p>De 10 spil med den højeste bedømmelse</p>
           </div>
         </div>
         <div class="popular-games" id="popularGames"></div>
